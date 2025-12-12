@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Coding Lessons - Learn Programming</title>
+    <style>
+        :root {
+            --color-primary: #f97316;
+            --color-secondary: #ea580c;
+            --color-accent: #fed7aa;
+            --color-success: #fb923c;
+            --color-bg-primary: #fffbf0;
+            --color-bg-secondary: #fef3c7;
+            --color-text-primary: #92400e;
+            --color-text-secondary: #b45309;
+            --color-border: rgba(249, 115, 22, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header/Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav button {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, rgba(255, 251, 240, 0.95) 0%, rgba(254, 243, 199, 0.95) 100%);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lesson-item {
+            padding: 12px 16px;
+            background: rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.95em;
+        }
+
+        .lesson-item:hover {
+            border-left-color: var(--color-primary);
+            background: rgba(249, 115, 22, 0.15);
+        }
+
+        .lesson-item.active {
+            background: rgba(249, 115, 22, 0.2);
+            border-color: var(--color-primary);
+            border-left-color: var(--color-accent);
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        /* Content Area */
+        .content {
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.95) 0%, rgba(255, 251, 240, 0.95) 100%);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .lesson-header {
+            margin-bottom: 30px;
+        }
+
+        .lesson-header h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+
+        .lesson-description {
+            color: var(--color-text-secondary);
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f97316, #fb923c);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin: 30px 0;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00d9ff;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(249, 115, 22, 0.2);
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Key Concepts */
+        .concepts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .concept-card {
+            background: rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .concept-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .concept-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-primary);
+        }
+
+        .concept-description {
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+        }
+
+        /* Interactive Features */
+        .practice-section {
+            background: rgba(249, 115, 22, 0.08);
+            border-left: 4px solid var(--color-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .practice-title {
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-area {
+            margin: 15px 0;
+        }
+
+        .input-area label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+
+        .input-area input,
+        .input-area textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .input-area textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #00b350;
+            transform: translateY(-2px);
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            margin: 15px 0;
+        }
+
+        .quiz-question label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .quiz-question label:hover {
+            background: rgba(249, 115, 22, 0.15);
+        }
+
+        .quiz-question input[type="radio"],
+        .quiz-question input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            font-size: 0.9em;
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .lesson-header h2 {
+                font-size: 1.5em;
+            }
+
+            .concepts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">Python Coding Lessons</div>
+            <nav>
+                <button onclick="showStats()">📊 Progress</button>
+            </nav>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="lessons-list" id="lessonsList"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="content" id="contentArea"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>💡 Keep learning, keep coding! Master Python one lesson at a time.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Lessons Data
+        const lessons = [
+            {
+                id: 1,
+                title: "Getting Started with Python",
+                category: "Basics",
+                progress: 100,
+                description: "Introduction to Python programming language",
+                content: `
+                    <div class="lesson-header">
+                        <h2>🚀 Getting Started with Python</h2>
+                        <p class="lesson-description">Learn the fundamentals of Python and set up your development environment.</p>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="progress-text">100% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">📖 What is Python?</div>
+                        <div class="section-content">
+                            Python is a high-level, interpreted programming language known for its simplicity and readability. Created by Guido van Rossum in 1991, it has become one of the most popular programming languages due to its clear syntax and versatile applications.
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">✨ Key Features</div>
+                        <div class="concepts">
+                            <div class="concept-card">
+                                <div class="concept-title">🎯 Simple & Readable</div>
+                                <div class="concept-description">Python's syntax is clean and intuitive, making it easy to learn for beginners.</div>
+                            </div>
+                            <div class="concept-card">
+                                <div class="concept-title">🚀 Versatile</div>
+                                <div class="concept-description">Used in web development, data science, AI, automation, and more.</div>
+                            </div>
+                            <div class="concept-card">
+                                <div class="concept-title">🌐 Cross-Platform</div>
+                                <div class="concept-description">Works on Windows, Mac, Linux, and other operating systems.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">💻 Your First Python Program</div>
+                        <div class="code-block">print("Hello, Python!")
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <div class="section-content">
+                            When you run this code, it displays "Hello, Python!" on the screen. The print() function is used to display output.
+                        </div>
+                    </div>
+
+                    <div class="practice-section">
+                        <div class="practice-title">⚡ Quick Task</div>
+                        <div class="section-content">Try modifying the text in the print() function and see what happens!</div>
+                        <button class="btn btn-primary" onclick="markLessonComplete(1)">✓ Mark as Complete</button>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "Variables & Data Types",
+                category: "Basics",
+                progress: 75,
+                description: "Understanding variables, strings, numbers, and more",
+                content: `
+                    <div class="lesson-header">
+                        <h2>📦 Variables & Data Types</h2>
+                        <p class="lesson-description">Master the fundamental data types and variable assignment in Python.</p>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%"></div>
+                            </div>
+                            <span class="progress-text">75% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🎯 What are Variables?</div>
+                        <div class="section-content">
+                            Variables are containers for storing data values. In Python, you don't need to declare the type of a variable; Python infers it automatically based on the value assigned.
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">📝 Variable Assignment</div>
+                        <div class="code-block">name = "Alice"
+age = 25
+height = 5.8
+is_student = True
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🔤 Data Types</div>
+                        <div class="concepts">
+                            <div class="concept-card">
+                                <div class="concept-title">String (str)</div>
+                                <div class="concept-description">Text data: "Hello", 'World'</div>
+                            </div>
+                            <div class="concept-card">
+                                <div class="concept-title">Integer (int)</div>
+                                <div class="concept-description">Whole numbers: 42, -10, 0</div>
+                            </div>
+                            <div class="concept-card">
+                                <div class="concept-title">Float</div>
+                                <div class="concept-description">Decimal numbers: 3.14, 2.5</div>
+                            </div>
+                            <div class="concept-card">
+                                <div class="concept-title">Boolean (bool)</div>
+                                <div class="concept-description">True or False values</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-section">
+                        <div class="practice-title">⚡ Practice Exercise</div>
+                        <div class="input-area">
+                            <label>Create a variable with your name:</label>
+                            <input type="text" id="practice2_input" placeholder="Enter your answer">
+                        </div>
+                        <button class="btn btn-success" onclick="checkAnswer(2)">Check Answer</button>
+                        <button class="btn btn-primary" onclick="markLessonComplete(2)">✓ Mark as Complete</button>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: "Control Flow & Conditionals",
+                category: "Intermediate",
+                progress: 50,
+                description: "If, elif, else statements and logical operations",
+                content: `
+                    <div class="lesson-header">
+                        <h2>🔀 Control Flow & Conditionals</h2>
+                        <p class="lesson-description">Learn how to make decisions in your code using if, elif, and else statements.</p>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 50%"></div>
+                            </div>
+                            <span class="progress-text">50% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🎯 Conditional Statements</div>
+                        <div class="section-content">
+                            Conditional statements allow your program to make decisions based on conditions. The if statement is the foundation of decision-making in programming.
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">📝 If-Else Structure</div>
+                        <div class="code-block">age = 18
+
+if age >= 18:
+    print("You are an adult")
+else:
+    print("You are a minor")
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🔀 If-Elif-Else</div>
+                        <div class="code-block">score = 85
+
+if score >= 90:
+    print("Grade: A")
+elif score >= 80:
+    print("Grade: B")
+elif score >= 70:
+    print("Grade: C")
+else:
+    print("Grade: F")
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="quiz-section">
+                        <div class="section-title">📋 Quick Quiz</div>
+                        <div class="quiz-question">
+                            <p style="margin-bottom: 10px;">What does 'elif' stand for?</p>
+                            <label>
+                                <input type="radio" name="q3_1"> else if
+                            </label>
+                            <label>
+                                <input type="radio" name="q3_1"> else label
+                            </label>
+                            <label>
+                                <input type="radio" name="q3_1"> else if not
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="markLessonComplete(3)">✓ Mark as Complete</button>
+                `
+            },
+            {
+                id: 4,
+                title: "Loops & Iteration",
+                category: "Intermediate",
+                progress: 25,
+                description: "For loops, while loops, and loop control",
+                content: `
+                    <div class="lesson-header">
+                        <h2>🔁 Loops & Iteration</h2>
+                        <p class="lesson-description">Master loops to execute code repeatedly and automate repetitive tasks.</p>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 25%"></div>
+                            </div>
+                            <span class="progress-text">25% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🎯 Why Use Loops?</div>
+                        <div class="section-content">
+                            Loops allow you to execute a block of code multiple times without writing it over and over. They're essential for working with lists, ranges, and automating repetitive tasks.
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🔄 For Loop</div>
+                        <div class="code-block">for i in range(5):
+    print(f"Count: {i}")
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">♻️ While Loop</div>
+                        <div class="code-block">count = 0
+while count < 5:
+    print(f"Count: {count}")
+    count += 1
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="concepts">
+                        <div class="concept-card">
+                            <div class="concept-title">For Loop</div>
+                            <div class="concept-description">Iterate through sequences like lists and ranges.</div>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-title">While Loop</div>
+                            <div class="concept-description">Execute code while a condition is true.</div>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-title">Break & Continue</div>
+                            <div class="concept-description">Control loop flow with break and continue statements.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="markLessonComplete(4)">✓ Mark as Complete</button>
+                `
+            },
+            {
+                id: 5,
+                title: "Functions & Modules",
+                category: "Advanced",
+                progress: 0,
+                description: "Creating functions, parameters, return values, and imports",
+                content: `
+                    <div class="lesson-header">
+                        <h2>⚙️ Functions & Modules</h2>
+                        <p class="lesson-description">Learn to create reusable code blocks and organize your programs.</p>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text">0% Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">🎯 What are Functions?</div>
+                        <div class="section-content">
+                            Functions are reusable blocks of code that perform a specific task. They help you organize code, reduce duplication, and make programs more maintainable.
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">📝 Creating Functions</div>
+                        <div class="code-block">def greet(name):
+    """This function greets a person"""
+    return f"Hello, {name}!"
+
+result = greet("Alice")
+print(result)
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="concepts">
+                        <div class="concept-card">
+                            <div class="concept-title">Parameters</div>
+                            <div class="concept-description">Inputs to your function that allow it to work with different data.</div>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-title">Return Values</div>
+                            <div class="concept-description">Output from a function that can be used in your program.</div>
+                        </div>
+                        <div class="concept-card">
+                            <div class="concept-title">Scope</div>
+                            <div class="concept-description">The visibility and lifetime of variables in different parts of code.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="markLessonComplete(5)">✓ Mark as Complete</button>
+                `
+            }
+        ];
+
+        let currentLesson = 1;
+        let completedLessons = new Set([1]);
+
+        // Initialize
+        function init() {
+            renderLessonsList();
+            showLesson(1);
+        }
+
+        // Render lessons list
+        function renderLessonsList() {
+            const list = document.getElementById('lessonsList');
+            list.innerHTML = '';
+            
+            lessons.forEach(lesson => {
+                const div = document.createElement('div');
+                div.className = `lesson-item ${currentLesson === lesson.id ? 'active' : ''}`;
+                div.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>${lesson.id}.</span>
+                        <span>${lesson.title}</span>
+                        ${completedLessons.has(lesson.id) ? '<span style="margin-left: auto;">✅</span>' : ''}
+                    </div>
+                `;
+                div.onclick = () => showLesson(lesson.id);
+                list.appendChild(div);
+            });
+        }
+
+        // Show lesson
+        function showLesson(id) {
+            currentLesson = id;
+            const lesson = lessons.find(l => l.id === id);
+            if (lesson) {
+                document.getElementById('contentArea').innerHTML = lesson.content;
+                renderLessonsList();
+            }
+        }
+
+        // Mark lesson complete
+        function markLessonComplete(id) {
+            completedLessons.add(id);
+            renderLessonsList();
+            alert(`✅ Lesson "${lessons[id-1].title}" marked as complete!`);
+        }
+
+        // Copy code
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement;
+            const code = codeBlock.textContent.replace('Copy', '').trim();
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+
+        // Check answer
+        function checkAnswer(id) {
+            alert('Great attempt! Keep practicing.');
+        }
+
+        // Show stats
+        function showStats() {
+            const percentage = Math.round((completedLessons.size / lessons.length) * 100);
+            alert(`📊 Your Progress\n\nCompleted: ${completedLessons.size}/${lessons.length} lessons\nProgress: ${percentage}%`);
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
